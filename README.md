@@ -84,7 +84,7 @@ applications/
 └── Acme-Data-Engineer-2026-06-29/
     ├── job-context.md            # Parsed job description
     ├── tailored-resume.md        # CV rewritten for the role
-    ├── Your Name_CV_Acme.pdf    # ATS-friendly PDF
+    ├── Your Name_CV_Acme.pdf     # ATS-friendly PDF
     ├── cover-letter.md           # Tailored cover letter
     ├── tailoring-notes.md        # What changed and why
     └── interview-answers.md      # (if questions provided)
