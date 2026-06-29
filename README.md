@@ -26,8 +26,7 @@ Given a job description, the agent:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/alrafikri/cv-job-agent/main/install.sh | bash
-
-# Installs venv, dependencies, configures .env, and sets up OpenCode MCP.
+# cd into your project and run the above — installs into ./job_applier/
 ```
 
 Then start OpenCode in the project directory and type:
@@ -36,14 +35,7 @@ Then start OpenCode in the project directory and type:
 @job-applier [paste job description]
 ```
 
-## OpenCode setup
-
-The repo includes two config files:
-
-- `.opencode/mcp.json` — registers the MCP server
-- `.opencode/agents/job-applier.md` — registers the subagent
-
-After cloning, the agent is ready to use when you open OpenCode in the project root.
+The install script sets up OpenCode config (`.opencode/mcp.json` and `.opencode/agents/job-applier.md`) in your project root automatically.
 
 ## How it works
 

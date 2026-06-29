@@ -2,6 +2,7 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/alrafikri/cv-job-agent.git"
+INSTALL_DIR="${1:-job_applier}"
 
 # If running via curl | bash, $0 is not a real path
 if [ ! -f "requirements.txt" ]; then
@@ -9,12 +10,13 @@ if [ ! -f "requirements.txt" ]; then
     echo "Downloading repo..."
     TMP_DIR=$(mktemp -d)
     git clone --depth=1 "$REPO_URL" "$TMP_DIR" >/dev/null 2>&1
-    cp -r "$TMP_DIR"/{scripts,skills,.opencode,requirements.txt,pyproject.toml,.env.example,.gitignore,LICENSE,README.md,cv.example.md,install.sh} . 2>/dev/null || true
+    mkdir -p "$INSTALL_DIR"
+    cp -r "$TMP_DIR"/{scripts,skills,requirements.txt,pyproject.toml,.env.example,cv.example.md,install.sh} "$INSTALL_DIR/" 2>/dev/null || true
     rm -rf "$TMP_DIR"
 fi
 
-DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$DIR"
+cd "$INSTALL_DIR"
+DIR="$(pwd)"
 
 echo "=== CV Job Agent Install ==="
 
@@ -69,9 +71,10 @@ else
     echo "Using existing .env"
 fi
 
-# Write OpenCode config with absolute path (more reliable)
-mkdir -p .opencode
-cat > .opencode/mcp.json << EOF
+# Write OpenCode config in project root
+OPENCODE_DIR="../.opencode"
+mkdir -p "$OPENCODE_DIR"
+cat > "$OPENCODE_DIR/mcp.json" << EOF
 {
   "mcpServers": {
     "cv-agent": {
@@ -83,9 +86,9 @@ cat > .opencode/mcp.json << EOF
 EOF
 
 # Ensure agent exists
-mkdir -p .opencode/agents
-if [ ! -f ".opencode/agents/job-applier.md" ]; then
-    cat > .opencode/agents/job-applier.md << 'AGENT'
+mkdir -p "$OPENCODE_DIR/agents"
+if [ ! -f "$OPENCODE_DIR/agents/job-applier.md" ]; then
+    cat > "$OPENCODE_DIR/agents/job-applier.md" << 'AGENT'
 ---
 description: Creates tailored job applications from a master CV and job description
 mode: subagent
@@ -124,5 +127,7 @@ fi
 echo ""
 echo "=== Install complete ==="
 echo ""
-echo "To use, open OpenCode in this directory and run:"
+echo "To use, open OpenCode in the project root and run:"
 echo "  @job-applier [paste job description]"
+echo ""
+echo "Installed to: $DIR"
