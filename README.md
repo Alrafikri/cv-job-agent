@@ -26,6 +26,8 @@ Given a job description, the agent:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/alrafikri/cv-job-agent/main/install.sh | bash
+
+# Installs venv, dependencies, configures .env, and sets up OpenCode MCP.
 ```
 
 Then start OpenCode in the project directory and type:
