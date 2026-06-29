@@ -2,20 +2,25 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/alrafikri/cv-job-agent.git"
-INSTALL_DIR="${1:-job_applier}"
-
-# If running via curl | bash, $0 is not a real path
-if [ ! -f "requirements.txt" ]; then
+# curl | bash mode: download and install into job_applier/
+# Direct bash: install in current dir (or $1 if provided)
+if [ "$0" = "bash" ] || [ "$0" = "sh" ]; then
+    INSTALL_DIR="${1:-job_applier}"
     echo "=== CV Job Agent Install ==="
     echo "Downloading repo..."
     TMP_DIR=$(mktemp -d)
     git clone --depth=1 "$REPO_URL" "$TMP_DIR" >/dev/null 2>&1
     mkdir -p "$INSTALL_DIR"
-    cp -r "$TMP_DIR"/{scripts,skills,requirements.txt,pyproject.toml,.env.example,cv.example.md,install.sh} "$INSTALL_DIR/" 2>/dev/null || true
+    cp -r "$TMP_DIR"/{scripts,skills,requirements.txt,pyproject.toml,.env.example,cv.example.md} "$INSTALL_DIR/" 2>/dev/null || true
     rm -rf "$TMP_DIR"
+    cd "$INSTALL_DIR"
+else
+    cd "$(dirname "$0")"
+    if [ -n "${1:-}" ]; then
+        mkdir -p "$1"
+        cd "$1"
+    fi
 fi
-
-cd "$INSTALL_DIR"
 DIR="$(pwd)"
 
 echo "=== CV Job Agent Install ==="

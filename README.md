@@ -26,7 +26,6 @@ Given a job description, the agent:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/alrafikri/cv-job-agent/main/install.sh | bash
-# cd into your project and run the above — installs into ./job_applier/
 ```
 
 Then start OpenCode in the project directory and type:
