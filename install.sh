@@ -2,6 +2,8 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/alrafikri/cv-job-agent.git"
+PROJECT_ROOT="$(pwd)"
+
 # curl | bash mode: download and install into job_applier/
 # Direct bash: install in current dir (or $1 if provided)
 if [ "$0" = "bash" ] || [ "$0" = "sh" ]; then
@@ -61,23 +63,29 @@ if [ ! -f ".env" ]; then
     cp .env.example .env
     echo ""
     echo "=== Configuration ==="
-    read -p "Path to your cv.md: " cv_path
-    if [ -n "$cv_path" ]; then
-        if [[ "$cv_path" != /* ]]; then
-            cv_path="$(cd "$(dirname "$cv_path")" && pwd)/$(basename "$cv_path")"
+    echo "Edit job_applier/.env to set your cv.md path and name."
+    echo "Or set them now:"
+    if [ -t 0 ]; then
+        read -p "Path to your cv.md: " cv_path
+        if [ -n "$cv_path" ]; then
+            if [[ "$cv_path" != /* ]]; then
+                cv_path="$(cd "$(dirname "$cv_path")" && pwd)/$(basename "$cv_path")"
+            fi
+            sed -i '' "s|CV_PATH=./cv.md|CV_PATH=$cv_path|" .env
         fi
-        sed -i '' "s|CV_PATH=./cv.md|CV_PATH=$cv_path|" .env
-    fi
-    read -p "Your full name (for PDF filenames): " user_name
-    if [ -n "$user_name" ]; then
-        sed -i '' "s|USER_NAME=Your Name|USER_NAME=$user_name|" .env
+        read -p "Your full name (for PDF filenames): " user_name
+        if [ -n "$user_name" ]; then
+            sed -i '' "s|USER_NAME=Your Name|USER_NAME=$user_name|" .env
+        fi
+    else
+        echo "  (non-interactive — edit job_applier/.env later)"
     fi
 else
     echo "Using existing .env"
 fi
 
 # Write OpenCode config in project root
-OPENCODE_DIR="../.opencode"
+OPENCODE_DIR="$PROJECT_ROOT/.opencode"
 mkdir -p "$OPENCODE_DIR"
 cat > "$OPENCODE_DIR/mcp.json" << EOF
 {
