@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_URL="https://github.com/alrafikri/cv-job-agent.git"
+
+# If running via curl | bash, $0 is not a real path
+if [ ! -f "requirements.txt" ]; then
+    echo "=== CV Job Agent Install ==="
+    echo "Downloading repo..."
+    TMP_DIR=$(mktemp -d)
+    git clone --depth=1 "$REPO_URL" "$TMP_DIR" >/dev/null 2>&1
+    cp -r "$TMP_DIR"/{scripts,skills,.opencode,requirements.txt,pyproject.toml,.env.example,.gitignore,LICENSE,README.md,cv.example.md,install.sh} . 2>/dev/null || true
+    rm -rf "$TMP_DIR"
+fi
+
 DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$DIR"
 
