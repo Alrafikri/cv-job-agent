@@ -1,0 +1,18 @@
+[project]
+name = "cv-job-agent"
+version = "0.1.0"
+description = "OpenCode MCP agent that tailors your CV and generates job applications"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.0.0",
+    "weasyprint>=62",
+    "jinja2>=3.1",
+    "markdown>=3.5",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+cv-agent = "scripts.cv_mcp_server:main"
+
+[tool.setuptools.packages.find]
+include = ["scripts*"]

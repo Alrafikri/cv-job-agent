@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cv-agent": {
+      "command": "/Users/almas/Desktop/career/.venv/bin/python3",
+      "args": ["/Users/almas/Desktop/career/scripts/cv_mcp_server.py"]
+    }
+  }
+}
