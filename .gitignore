@@ -6,3 +6,4 @@ applications/
 docs/
 __pycache__/
 *.pyc
+profiles/
